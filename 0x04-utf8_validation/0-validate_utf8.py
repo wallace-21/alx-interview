@@ -7,7 +7,7 @@ def validUTF8(data):
     """acceepts a list of integers"""
     bytes_of_num = 0
     for nums in data:
-        if nums > 127:
+        if nums > 255:
             return False
 
         if bytes_of_num == 0:
