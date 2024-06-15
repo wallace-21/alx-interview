@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+"""declare a function minOperations"""
+
 
 def minOperations(n):
     """a function given calculates the min
