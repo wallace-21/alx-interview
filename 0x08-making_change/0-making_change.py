@@ -18,7 +18,7 @@ def makeChange(coins, total):
     coins.sort(reverse=True)
     result: List[int] = []
 
-    if total == 0:
+    if total <= 0:
         return (0)
 
     for coin in coins:
@@ -31,4 +31,4 @@ def makeChange(coins, total):
     if sum(result) != total:
         return (-1)
 
-    return (result)
+    return (len(result))
