@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+"""decclare a function"""
+
 
 def makeChange(coins, total):
     """functiom that determines the fewest number of
