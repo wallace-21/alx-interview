@@ -13,7 +13,7 @@ def makeChange(coins, total):
           - returns the length of the number of coins used
     """
     coins.sort(reverse=True)
-   result = []
+    result = []
 
     if total <= 0:
         return (0)
