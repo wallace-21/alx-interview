@@ -1,8 +1,5 @@
 #!/usr/bin/python3
 
-"""import typing, the type anotation module"""
-from typing import List
-
 
 def makeChange(coins, total):
     """functiom that determines the fewest number of
@@ -16,7 +13,7 @@ def makeChange(coins, total):
           - returns the length of the number of coins used
     """
     coins.sort(reverse=True)
-    result: List[int] = []
+    result = []
 
     if total <= 0:
         return (0)
