@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+from typing import List
 
 def makeChange(coins, total):
     """functiom that determines the fewest number of
@@ -13,7 +13,7 @@ def makeChange(coins, total):
           - returns the length of the number of coins used
     """
     coins.sort(reverse=True)
-    result = []
+    result: List[int] = []
 
     if total <= 0:
         return (0)
