@@ -25,10 +25,13 @@ def makeChange(coins, total):
         while total >= coin:
             result.append(coin)
             total -= coin
-        if total == 0:
-            break
 
-    if sum(result) != total:
+            if total == 0:
+                break
+    """ return -1 If total cannot be met by
+        any number of coins you have
+    """
+    if total > 0:
         return (-1)
 
     return (len(result))
