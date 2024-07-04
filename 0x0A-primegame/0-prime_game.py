@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+"""define is winner"""
+
 
 def isWinner(x, nums):
     """
