@@ -5,16 +5,20 @@ def isWinner(x, nums):
     """
         Determines the winner of a series of prime game rounds.
 
-        In each round, Maria and Ben take turns to pick prime numbers starting from the smallest.
-        All multiples of the chosen prime are removed from the list of available numbers.
+        In each round, Maria and Ben take turns to pick prime
+        numbers starting from the smallest.
+        All multiples of the chosen prime are removed from the
+        list of available numbers.
         The player who cannot make a move loses the round.
 
         Parameters:
                 x (int): The number of rounds to be played.
-                nums (list): A list of integers, where each integer represents the maximum number in the range for each round.
+                nums (list): A list of integers, where each integer
+                represents the maximum number in the range for each round.
 
         Returns:
-            str: The name of the player with the most wins ("Maria" or "Ben"). If there's a tie, returns None.
+            str: The name of the player with the most wins ("Maria" or "Ben").
+            If there's a tie, returns None.
     """
     if x <= 0 or not nums:
         return None
@@ -22,7 +26,8 @@ def isWinner(x, nums):
     max_n = max(nums)
 
     """
-        Generate a list of prime numbers up to max_n using the Sieve of Eratosthenes
+        Generate a list of prime numbers up to
+        max_n using the Sieve of Eratosthenes
     """
     is_prime = [True] * (max_n + 1)
     is_prime[0] = is_prime[1] = False  # 0 and 1 are not primes
