@@ -19,18 +19,12 @@ def parse_log(log: str) -> Tuple[Optional[str], Optional[str]]:
         If the log entry does not match the expected format,
         returns None, None.
     """
-    parts = (
-        r"(?P<ip>\S+)\d+\.\d+\.\d+\.\d+\s+",
-        r"- \[",
-        r"(?P<date>[^\]]+)",
-        r'\] "(?P<method>GET) (?P<res>/projects/260) (?P<proto>HTTP/1\.1)" ',
-        r"(?P<status_code>\d+)",
-        r" ",
-        r"(?P<file_size>\d+)",
-    )
-
-    log_fmt = "{}{}{}{}{}{}{}\\s*".format(
-        parts[0], parts[1], parts[2], parts[3], parts[4], parts[5], parts[6]
+    log_fmt = (
+        r"(?P<ip>\S+)\d+\.\d+\.\d+\.\d+\s+- \["
+        r"(?P<date>[^\]]+)"
+        r'\] "(?P<method>GET) (?P<res>/projects/260) (?P<proto>HTTP/1\.1)" '
+        r"(?P<status_code>\d+) "
+        r"(?P<file_size>\d+)"
     )
 
     match = re.fullmatch(log_fmt, log.strip())
