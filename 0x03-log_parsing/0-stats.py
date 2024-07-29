@@ -16,9 +16,9 @@ def parse_log(log: str) -> Tuple[Optional[str], Optional[str]]:
 
     Returns:
         A tuple containing the status code and file size.
-        If the log entry does not match the expected format,
-        returns None, None.
+        If the log entry does not match the expected format, returns None, None.
     """
+    # Combined regex pattern parts into a single formatted string
     log_fmt = (
         r"(?P<ip>\S+)\d+\.\d+\.\d+\.\d+\s+- \["
         r"(?P<date>[^\]]+)"
@@ -50,15 +50,22 @@ def process_logs() -> None:
     an EOFError or KeyboardInterrupt exception is raised.
     """
     status_counter, size_counter = Counter(), Counter()
+    line_count = 0  # Added to keep track of the number of lines processed
+    
     try:
-        for idx, log in enumerate(sys.stdin, start=1):
+        for log in sys.stdin:
+            line_count += 1  # Increment line count for each log processed
             status, size = parse_log(log)
             if status and size:
                 status_counter[status] += 1
                 size_counter["size"] += int(size)
-            if idx % 10 == 0:
+            
+            # Print stats every 10 lines
+            if line_count % 10 == 0:
                 print_stats(status_counter, size_counter)
+    
     except (KeyboardInterrupt, EOFError):
+        # Print final stats before exiting
         print_stats(status_counter, size_counter)
         sys.exit(0)
 
@@ -74,10 +81,11 @@ def print_stats(status_counter: Counter, size_counter: Counter) -> None:
     Prints the total file size and the count of each status code
     in ascending order.
     """
-    print(f"\nFile size: {size_counter['size']}")
+    print(f"File size: {size_counter['size']}")
     for status in sorted(status_counter):
         print(f"{status}: {status_counter[status]}")
 
 
 if __name__ == "__main__":
     process_logs()
+
