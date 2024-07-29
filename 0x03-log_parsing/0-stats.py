@@ -3,14 +3,8 @@
 
 import re
 import sys
-import signal
-from collections import defaultdict
-from typing import Dict, Tuple, Optional
-
-
-# Initialize metrics
-file_size_total: int = 0
-status_code_count: Dict[str, int] = defaultdict(int)
+from collections import Counter
+from typing import Tuple, Optional
 
 
 def parse_log(log: str) -> Tuple[Optional[str], Optional[str]]:
@@ -50,28 +44,6 @@ def parse_log(log: str) -> Tuple[Optional[str], Optional[str]]:
     return None, None
 
 
-def print_stats() -> None:
-    """
-    Print statistics about the processed logs.
-    """
-    global file_size_total, status_code_count
-    print(f"File size: {file_size_total}")
-    for status in sorted(status_code_count):
-        print(f"{status}: {status_code_count[status]}")
-
-
-def handle_interrupt(signal_number: int, frame: Optional[None]) -> None:
-    """
-    Handles keyboard interrupt (CTRL+C) to print statistics and exit.
-
-    Args:
-        signal_number (int): The signal number.
-        frame (Optional[None]): The current stack frame (not used).
-    """
-    print_stats()
-    sys.exit(0)
-
-
 def process_logs() -> None:
     """
     Process logs from standard input.
@@ -83,31 +55,34 @@ def process_logs() -> None:
     Prints the statistics every 10 lines and when
     an EOFError or KeyboardInterrupt exception is raised.
     """
-    global file_size_total, status_code_count
-    line_count: int = 0
-
-    # Register the signal handler for keyboard interruption
-    signal.signal(signal.SIGINT, handle_interrupt)
-
+    status_counter, size_counter = Counter(), Counter()
     try:
-        for line in sys.stdin:
-            line_count += 1
-            status, size = parse_log(line)
+        for idx, log in enumerate(sys.stdin, start=1):
+            status, size = parse_log(log)
             if status and size:
-                status_code_count[status] += 1
-                file_size_total += int(size)
-
-            # Print stats after every 10 lines
-            if line_count % 10 == 0:
-                print_stats()
-
+                status_counter[status] += 1
+                size_counter["size"] += int(size)
+            if idx % 10 == 0:
+                print_stats(status_counter, size_counter)
     except (KeyboardInterrupt, EOFError):
-        print_stats()
+        print_stats(status_counter, size_counter)
         sys.exit(0)
-    except BrokenPipeError:
-        # Handle the case where the pipe is broken (i.e.,
-        # when the pipe is closed)
-        sys.exit(0)
+
+
+def print_stats(status_counter: Counter, size_counter: Counter) -> None:
+    """
+    Print statistics about the processed logs.
+
+    Args:
+        status_counter (Counter): A counter of HTTP status codes.
+        size_counter (Counter): A counter of file sizes.
+
+    Prints the total file size and the count of each status code
+    in ascending order.
+    """
+    print(f"\nFile size: {size_counter['size']}")
+    for status in sorted(status_counter):
+        print(f"{status}: {status_counter[status]}")
 
 
 if __name__ == "__main__":
