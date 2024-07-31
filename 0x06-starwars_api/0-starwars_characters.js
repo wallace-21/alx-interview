@@ -20,17 +20,24 @@ request(movieUrl, (error, response, body) => {
 
   const movieData = JSON.parse(body);
   const characters = movieData.characters || [];
-
-  // Fetch and print each character's name in the order provided
-  characters.forEach((characterUrl) => {
+  const characterRequests = characters.map(characterUrl => new Promise((resolve, reject) => {
     request(characterUrl, (error, response, body) => {
       if (error) {
-        console.error(`Error: Unable to fetch character data for URL ${characterUrl}`);
-        return;
+        reject(`Error: Unable to fetch character data for URL ${characterUrl}`);
+      } else {
+        const characterData = JSON.parse(body);
+        resolve(characterData.name);
       }
-
-      const characterData = JSON.parse(body);
-      console.log(characterData.name);
     });
-  });
+  }));
+
+  Promise.all(characterRequests)
+    .then(names => {
+      names.forEach(name => console.log(name));
+    })
+    .catch(error => {
+      console.error(error);
+      process.exit(1);
+    });
 });
+
