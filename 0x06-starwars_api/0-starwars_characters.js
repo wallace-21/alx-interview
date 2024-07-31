@@ -21,7 +21,7 @@ request(movieUrl, (error, response, body) => {
   const movieData = JSON.parse(body);
   const characters = movieData.characters || [];
 
-  // Fetch and print each character's name
+  // Fetch and print each character's name in the order provided
   characters.forEach((characterUrl) => {
     request(characterUrl, (error, response, body) => {
       if (error) {
