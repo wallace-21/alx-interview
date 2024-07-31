@@ -61,7 +61,7 @@ def process_logs() -> None:
                 size_counter["size"] += int(size)
             
             # Print stats every 10 lines
-            if line_count % 10 == 0:
+            if line_count % 20 == 0:
                 print_stats(status_counter, size_counter)
     
     except (KeyboardInterrupt, EOFError):
