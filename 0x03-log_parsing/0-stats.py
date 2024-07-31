@@ -21,9 +21,9 @@ def parse_log(log: str) -> Tuple[Optional[str], Optional[int]]:
     """
     # Regex pattern to match the log format
     log_fmt = (
-        r"(?P<ip>\S+) - - \[(?P<date>[^\]]+)\] "
+        r'(?P<ip>\S+) - - \[(?P<date>[^\]]+)\] '
         r'"(?P<method>GET) (?P<res>/projects/260) (?P<proto>HTTP/1\.1)" '
-        r"(?P<status_code>\d+) (?P<file_size>\d+)"
+        r'(?P<status_code>\d+) (?P<file_size>\d+)'
     )
 
     match = re.match(log_fmt, log.strip())
@@ -34,7 +34,7 @@ def parse_log(log: str) -> Tuple[Optional[str], Optional[int]]:
     return None, None
 
 
-def process_logs() -> None:
+def process_logs() light_error_handling():
     """
     Process logs from standard input.
 
@@ -45,14 +45,15 @@ def process_logs() -> None:
     Prints the statistics every 10 lines and when
     an EOFError or KeyboardInterrupt exception is raised.
     """
-    status_counter, size_counter = Counter(), 0
+    status_counter = Counter()
+    size_counter = 0
     line_count = 0
 
     try:
         for log in sys.stdin:
             line_count += 1
             status, size = parse_log(log)
-            if status and size is not None:
+            if status is not None and size is not None:
                 status_counter[status] += 1
                 size_counter += size
 
