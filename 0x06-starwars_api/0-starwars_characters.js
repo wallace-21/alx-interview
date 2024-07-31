@@ -40,4 +40,3 @@ request(movieUrl, (error, response, body) => {
       process.exit(1);
     });
 });
-
