@@ -16,7 +16,8 @@ def parse_log(log: str) -> Tuple[Optional[str], Optional[str]]:
 
     Returns:
         A tuple containing the status code and file size.
-        If the log entry does not match the expected format, returns None, None.
+        If the log entry does not match the expected format,
+        returns None, None.
     """
     # Combined regex pattern parts into a single formatted string
     log_fmt = (
@@ -51,7 +52,7 @@ def process_logs() -> None:
     """
     status_counter, size_counter = Counter(), Counter()
     line_count = 0  # Added to keep track of the number of lines processed
-    
+
     try:
         for log in sys.stdin:
             line_count += 1  # Increment line count for each log processed
@@ -59,11 +60,11 @@ def process_logs() -> None:
             if status and size:
                 status_counter[status] += 1
                 size_counter["size"] += int(size)
-            
+
             # Print stats every 10 lines
-            if line_count % 20 == 0:
+            if line_count % 5 == 0:
                 print_stats(status_counter, size_counter)
-    
+
     except (KeyboardInterrupt, EOFError):
         # Print final stats before exiting
         print_stats(status_counter, size_counter)
@@ -88,4 +89,3 @@ def print_stats(status_counter: Counter, size_counter: Counter) -> None:
 
 if __name__ == "__main__":
     process_logs()
-
