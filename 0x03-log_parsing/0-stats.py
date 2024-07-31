@@ -33,12 +33,12 @@ def parse_log(log: str) -> Tuple[Optional[str], Optional[int]]:
 
 def process_logs() -> None:
     """
-    Process logs from standard input.
-    Reads logs line by line, parses each log to extract the status code and
-    file size, and keeps a running total of the file size and a count
-    of each status code.
-    Prints the statistics every 10 lines and when
-    an EOFError or KeyboardInterrupt exception is raised.
+        Process logs from standard input.
+        Reads logs line by line, parses each log to extract the status code and
+        file size, and keeps a running total of the file size and a count
+        of each status code.
+        Prints the statistics every 10 lines and when
+        an EOFError or KeyboardInterrupt exception is raised.
     """
     status_counter, size_counter = Counter(), 0
     line_count = 0
@@ -47,7 +47,7 @@ def process_logs() -> None:
         for log in sys.stdin:
             line_count += 1
             status, size = parse_log(log)
-            if status and size is not None:
+            if status is not None and size is not None:
                 status_counter[status] += 1
                 size_counter += size
 
